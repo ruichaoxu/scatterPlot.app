@@ -18,11 +18,12 @@ fluidPage(
      # 
      # 
      # 
-    wellPanel(
+     p(strong(h5("2. Please upload the data file (.csv) here:"))), #Bold header line
+     wellPanel(
       
        selectInput(
          "selected_x_column",
-         "2. Select your x value",
+         "Select your independent variale (x) from uploaded file",
          choices = NULL),
      
      
@@ -35,15 +36,15 @@ fluidPage(
        (
          "down_ward_x",
          "▼"
-       )),
+       ),
    
-     
+     hr(),
 
-    wellPanel(
+    
       
       selectInput(
         "selected_y_column",
-        "3. Select your y value",
+        "Select your independent variale (y) from uploaded file",
         choices = NULL),
       
       
@@ -73,7 +74,7 @@ fluidPage(
            3,
            checkboxInput(
              "add_lr",
-             "Add linear Regressoin", FALSE
+             "Add linear Regression", FALSE
            )),
          column(
            3,offset = 1,

@@ -3,6 +3,9 @@ library(rhandsontable)
 library(lubridate)
 library(ggplot2)
 
+#using reactlog to debug: run following line in the console
+#options("shiny.reactlog" = TRUE)
+#Hit Ctrl+F3 in browser where app is opened and run
 
 
 # Define server logic required to draw a histogram
@@ -50,7 +53,7 @@ function(input, output,session) {
          {
          if
            (input$selected_x_column == colnames(theDat)[length(colnames(theDat))])
-           {colnames(theDat)[1]} #Final variable loop back to first
+           {colnames(theDat)[1]} #End variable loop back to first
          else
            {colnames(theDat)[(which(colnames(theDat) == input$selected_x_column)+1)]}
          } 
@@ -77,7 +80,7 @@ function(input, output,session) {
          {
            if
            (input$selected_x_column == colnames(theDat)[1])
-           {colnames(theDat)[length(colnames(theDat))]} #Final variable loop back to first
+           {colnames(theDat)[length(colnames(theDat))]} #First variable loop back to end
            else
            {colnames(theDat)[(which(colnames(theDat) == input$selected_x_column)-1)]}
          } 
@@ -104,10 +107,10 @@ function(input, output,session) {
        selected = 
          {
            if
-           (input$selected_x_column == colnames(theDat)[length(colnames(theDat))])
+           (input$selected_y_column == colnames(theDat)[length(colnames(theDat))])
            {colnames(theDat)[1]}
            else
-           {colnames(theDat)[(which(colnames(theDat) == input$selected_x_column)+1)]}
+           {colnames(theDat)[(which(colnames(theDat) == input$selected_y_column)+1)]}
          } 
      )
      
@@ -119,7 +122,7 @@ function(input, output,session) {
  
  #button to control independent variables (y), upward
  observeEvent(
-   input$up_ward_x,
+   input$up_ward_y,
    {
      
      theDat <- read.csv(input$uploaded_patient_data$datapath)
@@ -132,10 +135,10 @@ function(input, output,session) {
        selected = 
          {
            if
-           (input$selected_x_column == colnames(theDat)[1])
+           (input$selected_y_column == colnames(theDat)[1])
            {colnames(theDat)[length(colnames(theDat))]} #Final variable loop back to first
            else
-           {colnames(theDat)[(which(colnames(theDat) == input$selected_x_column)-1)]}
+           {colnames(theDat)[(which(colnames(theDat) == input$selected_y_column)-1)]}
          } 
      )
      
