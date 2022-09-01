@@ -2,23 +2,44 @@ library(shiny)
 library(DT)
 library(shinyjs)
 library(rhandsontable)
+library(bslib) #easy theme
+library(showtext) #load google font
+library(thematic)
+
+#apply a pre-designed theme, bslib::
+my_theme <- bs_theme(bootswatch = "flatly",
+                     base_font = font_google("Open Sans")
+                     )
+
+#populate HTML theme to the plots, thematic::
+thematic_shiny(font = "auto")
+
+
+
 
 fluidPage(
   
-  h1("Scatter plot"),
-  p(code("Upload your file and select the independent and dependent variables")),
+ theme = my_theme,
   
+ h1("Scatter plot"),
+ p(code("Upload your file and select the independent and dependent variables")),
+ br(),
+
 
  sidebarLayout(
    
    sidebarPanel(
      
+       p(strong(h5("1. Please upload the data file (.csv) here:"))),
        fileInput("uploaded_patient_data",
-                 "1. Please upload the data file (.csv) here:"),
+                 label = NULL),
      # 
      # 
-     # 
-     p(strong(h5("2. Please upload the data file (.csv) here:"))), #Bold header line
+     #
+     br(),
+     br(),
+     
+     p(strong(h5("2. Please select the dependent and independent variables"))), #Bold header line
      wellPanel(
       
        selectInput(
@@ -61,7 +82,8 @@ fluidPage(
     
     
        
-     
+     br(),
+     br(),
      
      
        actionButton(
@@ -85,15 +107,23 @@ fluidPage(
        )
        
      ),
+   
+   
+   
    mainPanel
-   (
-     column
-     (
-       12,
-       plotOutput("scatterPlot")
-       
-     )
+   ( 
+     wellPanel(
+       p(strong(h5("The data table"))),
+       br(),
+       br(),
+       DTOutput("theUploadedDat")),
      
+     
+     wellPanel(
+       p(strong(h5("The plot"))),
+       br(),
+       br(),
+       plotOutput("scatterPlot"))
    )
  ))  
   

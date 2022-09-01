@@ -2,6 +2,7 @@ library(tidyverse)
 library(rhandsontable)
 library(lubridate)
 library(ggplot2)
+library(DT)
 
 #using reactlog to debug: run following line in the console
 #options("shiny.reactlog" = TRUE)
@@ -11,7 +12,15 @@ library(ggplot2)
 # Define server logic required to draw a histogram
 function(input, output,session) {
   
-
+  
+bs_themer() #Dynamically test theme settings
+  
+  uploadedDat <- reactive({
+    
+    theDat <- read.csv(input$uploaded_patient_data$datapath)
+    
+    return(theDat)
+  })
   
  observeEvent(input$uploaded_patient_data,
               {
@@ -145,12 +154,7 @@ function(input, output,session) {
    }
  ) 
  
-  uploadedDat <- reactive({
-    
-    theDat <- read.csv(input$uploaded_patient_data$datapath)
-    
-    return(theDat)
-  })
+
   
   
 ##output the scatter plot 
@@ -160,7 +164,11 @@ function(input, output,session) {
     #initially, no plot is shown
     if (input$update_plot == 0) 
       {
-      return()
+      return(#a string indicating nothing uploaded yet
+        {ggplot(data = NULL)+
+            annotate("text", label = "No data plotted yet",x = 0, y = 0, size = 10)+
+            theme_void()}
+      )
       }
     
     uploadedDat <- uploadedDat()
@@ -199,6 +207,23 @@ function(input, output,session) {
        
         
        })
+
+# data table (interactive)  
+  output$theUploadedDat <- renderDT({
+    
+    if (is.null(input$uploaded_patient_data))
+    {
+      return()
+    }
+    
+    uploadedDat <- uploadedDat()
+    
+    
+    uploadedDat%>%
+    datatable(extensions = "Responsive",rownames = FALSE) #responsive
+    
+  })
+  
 }
     
     
